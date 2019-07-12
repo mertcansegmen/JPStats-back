@@ -1,4 +1,5 @@
 const ui = new UI();
+const dataFetcher = new JobDataFetcher();
 
 const listUI = document.querySelector(".list-group");
 const cardUI = document.querySelector(".card");
@@ -22,6 +23,7 @@ listUI.addEventListener("click", function (e) {
         selection = e.target.parentElement;
     }
     const keywords = selection.lastElementChild.innerText.split(", ");
+    const jobPostings = dataFetcher.getJobPostingCounts(keywords);
     chart.destroy();
-    chart = ui.createChart(chartCanvasUI, keywords);
+    chart = ui.createChart(chartCanvasUI, jobPostings);
 });
