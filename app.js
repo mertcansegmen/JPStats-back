@@ -32,11 +32,15 @@ listUI.addEventListener("click", function (e) {
 formUI.addEventListener("submit", function(e) {
     const keywordInputUI = document.querySelector(".form-control");
     const keyword = keywordInputUI.value;
-    const jobPosting = dataFetcher.getSingleJobPostingCount(keyword);
     if(keyword === "") {
         return;
-    } else {
-        ui.createJumbotron(cardBodyUI, jobPosting);
-        keywordInputUI.value = "";
     }
+    const jobPosting = dataFetcher.getSingleJobPostingCount(keyword);
+    dataFetcher.getSingleJobPostingCount(keyword)
+        .then(jobPosting => {
+            ui.createJumbotron(cardBodyUI, jobPosting);
+        });
+        
+    keywordInputUI.value = "";
+    
 });

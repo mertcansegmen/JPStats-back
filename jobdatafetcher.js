@@ -1,8 +1,13 @@
 class JobDataFetcher {
     constructor() {}
     
-    getSingleJobPostingCount(keyword) {
-        return {keyword: keyword, count: Math.floor(Math.random() * (200 - 1)) + 1};
+    async getSingleJobPostingCount(keyword) {
+        const response = await fetch(`http://localhost:3000/${keyword}`);
+        const jobPostingCount = await response.json();
+        return {
+            keyword: keyword,
+            count: jobPostingCount
+        };
     }
 
     getJobPostingCounts(keywords) {

@@ -53,6 +53,8 @@ class UI {
             <div class="container">
                 <h1 class="display-4">${jobPosting.keyword}</h1>
                 <p class="lead">There are currently ${jobPosting.count} job postings related to this keyword.</p>
+                <hr class="my-4">
+                <p class="small">Based on job postings on kariyer.net</p>
             </div>
         </div>
         `;
@@ -71,7 +73,7 @@ class UI {
             data: {
                 labels: keywords,
                 datasets: [{
-                    label: "Current Number of Job Postings",
+                    label: "Current Number of Job Postings (Based on job postings on LinkedIn)",
                     data: postCounts,
                     backgroundColor: this.colors[randomColorIndex].backgroundColor,
                     borderColor: this.colors[randomColorIndex].borderColor,
