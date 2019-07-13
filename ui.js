@@ -33,9 +33,8 @@ class UI {
         ]
     }
 
-    handleSize(listUI, cardUI, chartCanvasUI) {
+    handleSize(listUI, cardUI) {
         cardUI.style.height = listUI.offsetHeight + 2.5 + "px";
-        chartCanvasUI.height = 180;
     }
 
     // Set list item selected on click
@@ -48,11 +47,25 @@ class UI {
         });
     }
 
-    createChart(chartCanvasUI, jobPostings) {
-        var ctx = chartCanvasUI.getContext('2d');
+    createJumbotron(cardBodyUI, jobPosting) {
+        cardBodyUI.innerHTML = `
+        <div class="jumbotron jumbotron-fluid bg-white">
+            <div class="container">
+                <h1 class="display-4">${jobPosting.keyword}</h1>
+                <p class="lead">There are currently ${jobPosting.count} job postings related to this keyword.</p>
+            </div>
+        </div>
+        `;
+    }
+
+    createChart(cardBodyUI, jobPostings) {
+        cardBodyUI.innerHTML = `<canvas id="chart" class="h-100"></canvas`;
+        
         const keywords = jobPostings.map(element => element.keyword);
         const postCounts = jobPostings.map(element => element.count);
         const randomColorIndex = Math.floor(Math.random() * this.colors.length);
+
+        var ctx = document.querySelector("#chart").getContext('2d');
         return new Chart(ctx, {
             type: 'bar',
             data: {

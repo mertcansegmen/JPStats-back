@@ -3,12 +3,13 @@ const dataFetcher = new JobDataFetcher();
 
 const listUI = document.querySelector(".list-group");
 const cardUI = document.querySelector(".card");
-const chartCanvasUI = document.querySelector("#chart");
+const cardBodyUI = document.querySelector(".card-body");
+const formUI = document.querySelector(".form-inline");
 
-let chart = ui.createChart(chartCanvasUI, []);
+let chart = ui.createChart(cardBodyUI, []);
 chart.destroy();
 
-ui.handleSize(listUI, cardUI, chartCanvasUI);
+ui.handleSize(listUI, cardUI);
 ui.handleListSelection();
 
 listUI.addEventListener("click", function (e) {
@@ -25,5 +26,17 @@ listUI.addEventListener("click", function (e) {
     const keywords = selection.lastElementChild.innerText.split(", ");
     const jobPostings = dataFetcher.getJobPostingCounts(keywords);
     chart.destroy();
-    chart = ui.createChart(chartCanvasUI, jobPostings);
+    chart = ui.createChart(cardBodyUI, jobPostings);
+});
+
+formUI.addEventListener("submit", function(e) {
+    const keywordInputUI = document.querySelector(".form-control");
+    const keyword = keywordInputUI.value;
+    const jobPosting = dataFetcher.getSingleJobPostingCount(keyword);
+    if(keyword === "") {
+        return;
+    } else {
+        ui.createJumbotron(cardBodyUI, jobPosting);
+        keywordInputUI.value = "";
+    }
 });

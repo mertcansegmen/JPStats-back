@@ -1,6 +1,10 @@
 class JobDataFetcher {
     constructor() {}
     
+    getSingleJobPostingCount(keyword) {
+        return {keyword: keyword, count: Math.floor(Math.random() * (200 - 1)) + 1};
+    }
+
     getJobPostingCounts(keywords) {
         const jobPostings = [];
         keywords.forEach(function(keyword) {
