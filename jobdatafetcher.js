@@ -6,10 +6,10 @@ class JobDataFetcher {
         const jobPostingCount = await response.json();
         return {
             keyword: keyword,
-            count: jobPostingCount
+            count: Number((jobPostingCount).toString().split(".").join(""))
         };
     }
-    
+
     getJobPostingCounts(keywords) {
         return Promise.all(
           keywords.map(this.getSingleJobPostingCount)
