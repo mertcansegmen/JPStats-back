@@ -1,11 +1,9 @@
 const express = require("express");
-
-const app = express();
-
 const rp = require('request-promise');
 const $ = require('cheerio');
+const cors = require('cors');
 
-var cors = require('cors');
+const app = express();
 
 app.use(cors());
 
@@ -16,6 +14,7 @@ app.get("/:keyword", function(req, res) {
         .then(function(html){
             //const count = $('.t-black--light', html).text();
             const count = $('#totalJobCount', html).text();
+            console.log(req.params.keyword, count);
             res.send(count);
         })
         .catch(function(err){

@@ -13,34 +13,45 @@ ui.handleSize(listUI, cardUI);
 ui.handleListSelection();
 
 listUI.addEventListener("click", function (e) {
-    let selection = null;
+    let selectedListElement = null;
     if (e.target.nodeName === "A") {
-        selection = e.target;
+        selectedListElement = e.target;
     } else if (e.target.nodeName === "P") {
-        selection = e.target.parentElement;
+        selectedListElement = e.target.parentElement;
     } else if (e.target.nodeName === "H5") {
-        selection = e.target.parentElement.parentElement;
+        selectedListElement = e.target.parentElement.parentElement;
     } else {
-        selection = e.target.parentElement;
+        selectedListElement = e.target.parentElement;
     }
-    const keywords = selection.lastElementChild.innerText.split(", ");
-    const jobPostings = dataFetcher.getJobPostingCounts(keywords);
-    chart.destroy();
-    chart = ui.createChart(cardBodyUI, jobPostings);
+    const keywords = selectedListElement.lastElementChild.innerText.split(", ");
+    dataFetcher.getJobPostingCounts(keywords)
+        .then(jobPostings => {
+            const sortedJobPostings = jobPostings.sort(function (a, b) {
+                if (a.count > b.count) {
+                    return -1;
+                }
+                if (a.count < b.count) {
+                    return 1;
+                }
+                return 0;
+            });
+            chart.destroy();
+            chart = ui.createChart(cardBodyUI, jobPostings);
+        })
+        .catch(err => console.log(err));
 });
 
-formUI.addEventListener("submit", function(e) {
+formUI.addEventListener("submit", function (e) {
     const keywordInputUI = document.querySelector(".form-control");
     const keyword = keywordInputUI.value;
-    if(keyword === "") {
+    if (keyword === "") {
         return;
     }
-    const jobPosting = dataFetcher.getSingleJobPostingCount(keyword);
     dataFetcher.getSingleJobPostingCount(keyword)
         .then(jobPosting => {
             ui.createJumbotron(cardBodyUI, jobPosting);
         });
-        
+
     keywordInputUI.value = "";
-    
+
 });
