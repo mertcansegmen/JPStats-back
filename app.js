@@ -1,5 +1,19 @@
 const ui = new UI();
-const dataFetcher = new JobDataFetcher();
+const dataFetcher = {
+    async getSingleJobPostingCount(keyword) {
+      const response = await fetch(`http://localhost:3000/${keyword}`);
+      const jobPostingCount = await response.json();
+      return {
+        keyword: keyword,
+        count: jobPostingCount
+      };
+    },
+    getJobPostingCounts(keywords) {
+      return Promise.all(
+        keywords.map(this.getSingleJobPostingCount)
+      );
+    }
+  };
 
 const listUI = document.querySelector(".list-group");
 const cardUI = document.querySelector(".card");
@@ -16,8 +30,6 @@ listUI.addEventListener("click", function (e) {
     let selectedListElement = null;
     if (e.target.nodeName === "A") {
         selectedListElement = e.target;
-    } else if (e.target.nodeName === "P") {
-        selectedListElement = e.target.parentElement;
     } else if (e.target.nodeName === "H5") {
         selectedListElement = e.target.parentElement.parentElement;
     } else {
@@ -26,7 +38,7 @@ listUI.addEventListener("click", function (e) {
     const keywords = selectedListElement.lastElementChild.innerText.split(", ");
     dataFetcher.getJobPostingCounts(keywords)
         .then(jobPostings => {
-            const sortedJobPostings = jobPostings.sort(function (a, b) {
+            jobPostings.sort(function (a, b) {
                 if (a.count > b.count) {
                     return -1;
                 }
@@ -36,6 +48,7 @@ listUI.addEventListener("click", function (e) {
                 return 0;
             });
             chart.destroy();
+            console.log(jobPostings);
             chart = ui.createChart(cardBodyUI, jobPostings);
         })
         .catch(err => console.log(err));
