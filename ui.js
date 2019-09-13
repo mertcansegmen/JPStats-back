@@ -60,6 +60,17 @@ class UI {
         `;
     }
 
+    createJumbotron(cardBodyUI, message) {
+        cardBodyUI.innerHTML = `
+        <div class="jumbotron jumbotron-fluid bg-white m-0 h-100 p-0">
+            <div class="container h-100 p-5">
+
+                <p class="lead text-primary"><strong>${message}</strong></p>
+            </div>
+        </div>
+        `;
+    }
+
     createChart(cardBodyUI, jobPostings) {
         cardBodyUI.innerHTML = `<canvas id="chart" class="h-100"></canvas`;
         

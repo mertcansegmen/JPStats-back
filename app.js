@@ -1,7 +1,12 @@
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3000;
+}
+
 const ui = new UI();
 const dataFetcher = {
     async getSingleJobPostingCount(keyword) {
-      const response = await fetch(`http://localhost:3000/${keyword}`);
+      const response = await fetch(`http://localhost:${port}/${keyword}`);
       const jobPostingCount = await response.json();
       return {
         keyword: keyword,
@@ -25,6 +30,7 @@ chart.destroy();
 
 ui.handleSize(listUI, cardUI);
 ui.handleListSelection();
+ui.createJumbotron(cardBodyUI, "Select a category to compare job posting statistics of technologies or search for a certain keyword.");
 
 listUI.addEventListener("click", function (e) {
     let selectedListElement = null;
