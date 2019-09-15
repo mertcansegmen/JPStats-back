@@ -7,16 +7,14 @@ const app = express();
 
 app.use(cors());
 
-app.get("/:keyword", function(req, res) {
+app.get("/:keyword", function (req, res) {
     const keyword = encodeURIComponent(req.params.keyword);
-    //const url = `https://www.linkedin.com/jobs/search/?keywords=$keyword}`; //linkedin.com
     //const url = `https://www.kariyer.net/is-ilanlari/kw=${keyword}`; //kariyer.net
     const url = `https://tr.indeed.com/jobs?q=${keyword}&l=`; //indeed.com
     rp(url)
-        .then(function(html){
+        .then(function (html) {
             let count = "0";
-            if($('#searchCount', html).text() !== ""){
-                //const count = $('.t-black--light', html).text(); //linkedin.com
+            if ($('#searchCount', html).text() !== "") {
                 //const count = $('#totalJobCount', html).text(); //kariyer.net
                 const responseText = $('#searchCount', html).text(); //indeed.com
 
@@ -25,16 +23,16 @@ app.get("/:keyword", function(req, res) {
             console.log(keyword, count);
             res.send(count);
         })
-        .catch(function(err){
+        .catch(function (err) {
             console.log(err);
         });
 });
 
 let port = process.env.PORT;
 if (port == null || port == "") {
-  port = 3000;
+    port = 3000;
 }
 
-app.listen(3000, function() {
-    console.log(`Server started on port ${port}`);
+app.listen(port, function () {
+    console.log(`Server has started on port ${port}`);
 });
